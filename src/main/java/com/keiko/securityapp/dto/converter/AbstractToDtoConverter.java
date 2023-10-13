@@ -24,7 +24,7 @@ public abstract class AbstractToDtoConverter<E, D> implements Function<E, D> {
         return modelMapper.map (entity, dtoClass);
     }
 
-    private Converter<E, D> converter = context -> {
+    public Converter<E, D> converter = context -> {
         E entity = context.getSource ();
         D dto = context.getDestination ();
         mapSpecificFields (entity, dto);
@@ -32,4 +32,8 @@ public abstract class AbstractToDtoConverter<E, D> implements Function<E, D> {
     };
 
     public abstract void mapSpecificFields (E entity, D dto);
+
+    public ModelMapper getModelMapper () {
+        return modelMapper;
+    }
 }
