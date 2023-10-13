@@ -1,47 +1,48 @@
-package com.keiko.securityapp.entity;
+package com.keiko.securityapp.entity.security;
 
+import com.keiko.securityapp.entity.BaseEntity;
 import com.keiko.securityapp.entity.listener.TimeEntityListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.ManyToMany;
-import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.sql.Timestamp;
 import java.util.Set;
 
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.FetchType.LAZY;
+
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @EntityListeners (TimeEntityListener.class)
-public class User extends BaseEntity {
+public class Role extends BaseEntity implements GrantedAuthority {
 
-    @Email
     @Column (nullable = false, unique = true)
-    private String email;
-
-    @Column (nullable = false)
-    private String password;
-
     private String name;
 
-    @ManyToMany (fetch = LAZY)
-    private Set<Role> roles;
+    @ManyToMany (mappedBy = "roles",
+            fetch = LAZY, cascade = {PERSIST, MERGE})
+    private Set<User> users;
 
-    public User (Long id, Timestamp created, Timestamp modified, @Email String email, String password, String name, Set<Role> roles) {
+    public Role (Long id, Timestamp created, Timestamp modified, String name) {
         super (id, created, modified);
-        this.email = email;
-        this.password = password;
         this.name = name;
-        this.roles = roles;
+    }
+
+    @Override
+    public String getAuthority () {
+        return name;
     }
 
     @Override
@@ -50,20 +51,16 @@ public class User extends BaseEntity {
 
         if (o == null || getClass () != o.getClass ()) return false;
 
-        User user = (User) o;
+        Role role = (Role) o;
 
         return new EqualsBuilder ()
-                .append (email, user.email)
-                .append (password, user.password)
-                .append (name, user.name)
+                .append (name, role.name)
                 .isEquals ();
     }
 
     @Override
     public int hashCode () {
         return new HashCodeBuilder (17, 37)
-                .append (email)
-                .append (password)
                 .append (name)
                 .toHashCode ();
     }

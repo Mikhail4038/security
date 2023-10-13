@@ -1,7 +1,7 @@
 package com.keiko.securityapp.service.jwt.impl;
 
-import com.keiko.securityapp.entity.Role;
-import com.keiko.securityapp.entity.User;
+import com.keiko.securityapp.entity.security.Role;
+import com.keiko.securityapp.entity.security.User;
 import com.keiko.securityapp.service.jwt.JwtProvider;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -45,7 +45,7 @@ public class DefaultJwtProvider implements JwtProvider {
                 .collect (toSet ());
 
         final String name = user.getName ();
-        final Instant accessExpirationInstant = now ().plusMinutes (10).atZone (systemDefault ()).toInstant ();
+        final Instant accessExpirationInstant = now ().plusMinutes (15).atZone (systemDefault ()).toInstant ();
         final Date accessExpiration = Date.from (accessExpirationInstant);
 
         return Jwts.builder ()
@@ -60,7 +60,7 @@ public class DefaultJwtProvider implements JwtProvider {
     @Override
     public String generateRefreshToken (@NonNull User user) {
         final String email = user.getEmail ();
-        final Instant accessExpirationInstant = now ().plusMinutes (50).atZone (systemDefault ()).toInstant ();
+        final Instant accessExpirationInstant = now ().plusDays (30).atZone (systemDefault ()).toInstant ();
         final Date accessExpiration = Date.from (accessExpirationInstant);
 
         return Jwts.builder ()

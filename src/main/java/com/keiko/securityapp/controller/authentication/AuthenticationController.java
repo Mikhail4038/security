@@ -1,5 +1,6 @@
 package com.keiko.securityapp.controller.authentication;
 
+import com.keiko.securityapp.entity.jwt.JwtBlockUserRequest;
 import com.keiko.securityapp.entity.jwt.JwtRefreshRequest;
 import com.keiko.securityapp.entity.jwt.JwtRequest;
 import com.keiko.securityapp.entity.jwt.JwtResponse;
@@ -23,6 +24,12 @@ public class AuthenticationController {
     public ResponseEntity<JwtResponse> login (@RequestBody JwtRequest jwtRequest) {
         JwtResponse jwtResponse = jwtTokenHelper.login (jwtRequest);
         return ResponseEntity.status (HttpStatus.OK).body (jwtResponse);
+    }
+
+    @PostMapping ("/block")
+    public ResponseEntity block (@RequestBody JwtBlockUserRequest jwtBlockUserRequest) {
+        jwtTokenHelper.blockUser (jwtBlockUserRequest);
+        return ResponseEntity.ok ().build ();
     }
 
     @PostMapping ("/accessToken")

@@ -12,8 +12,8 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@RedisHash ("RefreshToken")
-public class RefreshToken implements Serializable {
+@RedisHash ("JwtRefreshToken")
+public class JwtRefreshToken implements Serializable {
 
 
     private String id;

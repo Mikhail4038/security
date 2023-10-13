@@ -1,6 +1,6 @@
 package com.keiko.securityapp.service.jwt.impl;
 
-import com.keiko.securityapp.entity.Role;
+import com.keiko.securityapp.entity.security.Role;
 import com.keiko.securityapp.entity.jwt.JwtAuthentication;
 import com.keiko.securityapp.service.common.RoleService;
 import com.keiko.securityapp.service.jwt.JwtAuthenticationProvider;

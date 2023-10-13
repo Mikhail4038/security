@@ -1,6 +1,6 @@
 package com.keiko.securityapp.entity.jwt;
 
-import com.keiko.securityapp.entity.Role;
+import com.keiko.securityapp.entity.security.Role;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.Authentication;

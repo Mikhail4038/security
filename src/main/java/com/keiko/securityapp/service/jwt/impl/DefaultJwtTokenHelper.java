@@ -1,15 +1,17 @@
 package com.keiko.securityapp.service.jwt.impl;
 
-import com.keiko.securityapp.entity.User;
+import com.keiko.securityapp.entity.security.User;
+import com.keiko.securityapp.entity.jwt.JwtBlockUserRequest;
 import com.keiko.securityapp.entity.jwt.JwtRefreshRequest;
 import com.keiko.securityapp.entity.jwt.JwtRequest;
 import com.keiko.securityapp.entity.jwt.JwtResponse;
-import com.keiko.securityapp.entity.redis.RefreshToken;
+import com.keiko.securityapp.entity.redis.JwtRefreshToken;
 import com.keiko.securityapp.service.common.UserService;
 import com.keiko.securityapp.service.jwt.JwtProvider;
 import com.keiko.securityapp.service.jwt.JwtTokenHelper;
 import com.keiko.securityapp.service.redis.RefreshTokenService;
 import io.jsonwebtoken.Claims;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,13 +37,13 @@ public class DefaultJwtTokenHelper implements JwtTokenHelper {
         final String email = jwtRequest.getEmail ();
         final User user = userService.findUserByEmail (email);
 
-        verifyPasswords (jwtRequest, user);
+        verifyPassword (jwtRequest, user);
 
         final String accessToken = jwtProvider.generateAccessToken (user);
         final String refreshToken = jwtProvider.generateRefreshToken (user);
-        final RefreshToken actualRefreshToken = new RefreshToken (email, refreshToken);
+        final JwtRefreshToken actualJwtRefreshToken = new JwtRefreshToken (email, refreshToken);
 
-        refreshTokenService.save (actualRefreshToken);
+        refreshTokenService.save (actualJwtRefreshToken);
         return new JwtResponse (accessToken, refreshToken);
     }
 
@@ -76,7 +78,7 @@ public class DefaultJwtTokenHelper implements JwtTokenHelper {
                 final User user = userService.findUserByEmail (email);
                 final String newRefreshToken = jwtProvider.generateRefreshToken (user);
                 final String newAccessToken = jwtProvider.generateAccessToken (user);
-                refreshTokenService.save (new RefreshToken (email, newRefreshToken));
+                refreshTokenService.save (new JwtRefreshToken (email, newRefreshToken));
 
                 return new JwtResponse (newAccessToken, newRefreshToken);
             }
@@ -84,7 +86,15 @@ public class DefaultJwtTokenHelper implements JwtTokenHelper {
         return new JwtResponse (null, null);
     }
 
-    private void verifyPasswords (JwtRequest jwtRequest, User user) {
+    @Override
+    @Transactional
+    public void blockUser (JwtBlockUserRequest jwtBlockUserRequest) {
+        final String email = jwtBlockUserRequest.getEmail ();
+        refreshTokenService.delete (email);
+        userService.deleteByEmail (email);
+    }
+
+    private void verifyPassword (JwtRequest jwtRequest, User user) {
         final String presentedPassword = jwtRequest.getPassword ();
         final String savedPassword = user.getPassword ();
 
@@ -95,7 +105,7 @@ public class DefaultJwtTokenHelper implements JwtTokenHelper {
     }
 
     private boolean verifyRefreshToken (String presentedRefreshToken, String email) {
-        final RefreshToken savedRefreshToken = refreshTokenService.findByEmail (email);
+        final JwtRefreshToken savedRefreshToken = refreshTokenService.findByEmail (email);
         final String token = savedRefreshToken.getToken ();
 
         return presentedRefreshToken.equals (token);
