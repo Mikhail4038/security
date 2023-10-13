@@ -24,7 +24,9 @@ public class RoleToDtoConverter implements Function<Role, RoleDto> {
 
     @PostConstruct
     public void setUpMapping () {
-        modelMapper.createTypeMap (Role.class, RoleDto.class);
+        modelMapper.createTypeMap (Role.class, RoleDto.class)
+                .addMappings (mapper -> mapper.skip (RoleDto::setUsers))
+                .setPostConverter (converter);
     }
 
     // TODO abstract
@@ -45,7 +47,10 @@ public class RoleToDtoConverter implements Function<Role, RoleDto> {
         Set<User> users = role.getUsers ();
         if (nonNull (users)) {
             Set<UserData> usersData = users.stream ()
-                    .map (u -> modelMapper.map (u, UserData.class))
+                    .map (u -> modelMapper
+                            .createTypeMap (User.class, UserData.class)
+                            .addMappings (mapper -> mapper.skip (UserData::setPassword))
+                            .map (u))
                     .collect (toSet ());
             dto.setUsers (usersData);
         }

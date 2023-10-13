@@ -1,4 +1,4 @@
-package com.keiko.securityapp.dto.converter.user;
+package com.keiko.securityapp.dto.converter;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;

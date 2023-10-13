@@ -4,11 +4,11 @@ import com.keiko.securityapp.dto.model.role.RoleData;
 import com.keiko.securityapp.dto.model.user.UserDto;
 import com.keiko.securityapp.entity.security.Role;
 import com.keiko.securityapp.entity.security.User;
+import jakarta.annotation.PostConstruct;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Set;
 import java.util.function.Function;
@@ -22,7 +22,7 @@ public class UserToDtoConverter implements Function<User, UserDto> {
     @Autowired
     private ModelMapper modelMapper;
 
-    @PostMapping
+    @PostConstruct
     public void setUpMapping () {
         modelMapper.createTypeMap (User.class, UserDto.class)
                 .addMappings (mapper -> mapper.skip (UserDto::setPassword))
