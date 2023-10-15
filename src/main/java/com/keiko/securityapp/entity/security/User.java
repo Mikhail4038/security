@@ -17,7 +17,6 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 import static jakarta.persistence.CascadeType.MERGE;
-import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
@@ -36,7 +35,7 @@ public class User extends BaseEntity {
 
     private String name;
 
-    @ManyToMany (fetch = LAZY, cascade = {PERSIST, MERGE})
+    @ManyToMany (fetch = LAZY, cascade = {MERGE})
     private Set<Role> roles;
 
     public User (Long id, Timestamp created, Timestamp modified, @Email String email, String password, String name, Set<Role> roles) {
@@ -65,6 +64,7 @@ public class User extends BaseEntity {
     @Override
     public int hashCode () {
         return new HashCodeBuilder (17, 37)
+                .append (getId ())
                 .append (email)
                 .append (password)
                 .append (name)

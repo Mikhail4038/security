@@ -17,7 +17,6 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 import static jakarta.persistence.CascadeType.MERGE;
-import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.FetchType.LAZY;
 
 
@@ -32,7 +31,7 @@ public class Role extends BaseEntity implements GrantedAuthority {
     private String name;
 
     @ManyToMany (mappedBy = "roles",
-            fetch = LAZY, cascade = {PERSIST, MERGE})
+            fetch = LAZY, cascade = {MERGE})
     private Set<User> users;
 
     public Role (Long id, Timestamp created, Timestamp modified, String name) {
@@ -61,6 +60,7 @@ public class Role extends BaseEntity implements GrantedAuthority {
     @Override
     public int hashCode () {
         return new HashCodeBuilder (17, 37)
+                .append (getId ())
                 .append (name)
                 .toHashCode ();
     }

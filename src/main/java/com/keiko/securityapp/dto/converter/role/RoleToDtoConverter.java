@@ -26,16 +26,15 @@ public class RoleToDtoConverter
         getModelMapper ().createTypeMap (Role.class, RoleDto.class)
                 .addMappings (mapper -> mapper.skip (RoleDto::setUsers))
                 .setPostConverter (converter);
+        getModelMapper ().createTypeMap (User.class, UserData.class)
+                .addMappings (mapper -> mapper.skip (UserData::setPassword));
     }
 
     public void mapSpecificFields (Role role, RoleDto dto) {
         Set<User> users = role.getUsers ();
         if (nonNull (users)) {
             Set<UserData> usersData = users.stream ()
-                    .map (u -> getModelMapper ()
-                            .createTypeMap (User.class, UserData.class)
-                            .addMappings (mapper -> mapper.skip (UserData::setPassword))
-                            .map (u))
+                    .map (u -> getModelMapper ().map (u, UserData.class))
                     .collect (toSet ());
             dto.setUsers (usersData);
         }
