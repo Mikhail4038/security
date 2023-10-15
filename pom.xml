@@ -17,6 +17,7 @@
     <properties>
         <java.version>17</java.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
+        <commons-collections.version>3.2.2</commons-collections.version>
         <jjwt.version>0.11.5</jjwt.version>
         <jedis.version>4.4.5</jedis.version>
         <modelmapper.version>3.0.0</modelmapper.version>
@@ -63,6 +64,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>${commons-collections.version}</version>
         </dependency>
 
         <!--JWT-->
