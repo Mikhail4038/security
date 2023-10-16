@@ -2,10 +2,7 @@ package com.keiko.securityapp.entity.security;
 
 import com.keiko.securityapp.entity.BaseEntity;
 import com.keiko.securityapp.entity.listener.TimeEntityListener;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +29,10 @@ public class User extends BaseEntity {
 
     @Column (nullable = false)
     private String password;
+
+    @Transient
+    @Column (nullable = false)
+    private String passwordConfirm;
 
     private String name;
 

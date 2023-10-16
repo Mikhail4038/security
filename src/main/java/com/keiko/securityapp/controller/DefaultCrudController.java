@@ -1,6 +1,7 @@
 package com.keiko.securityapp.controller;
 
 import com.keiko.securityapp.service.common.AbstractCrudService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +22,10 @@ public class DefaultCrudController<E, D> {
     @Autowired
     private Function<D, E> toEntityConverter;
 
+
+    // TODO return only status
     @PostMapping ("/save")
-    public ResponseEntity<D> save (@RequestBody D dto) {
+    public ResponseEntity<D> save (@RequestBody @Valid D dto) {
         E presentedEntity = toEntityConverter.apply (dto);
         E savedEntity = crudService.save (presentedEntity);
         D actualEntity = toDtoConverter.apply (savedEntity);
