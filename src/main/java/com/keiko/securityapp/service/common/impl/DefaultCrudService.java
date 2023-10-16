@@ -13,8 +13,8 @@ public class DefaultCrudService<E extends BaseEntity> implements AbstractCrudSer
     private AbstractCrudRepository<E> crudRepository;
 
     @Override
-    public E save (E entity) {
-        return crudRepository.save (entity);
+    public void save (E entity) {
+        crudRepository.save (entity);
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.function.Function;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 public class DefaultCrudController<E, D> {
@@ -22,14 +23,11 @@ public class DefaultCrudController<E, D> {
     @Autowired
     private Function<D, E> toEntityConverter;
 
-
-    // TODO return only status
     @PostMapping ("/save")
-    public ResponseEntity<D> save (@RequestBody @Valid D dto) {
-        E presentedEntity = toEntityConverter.apply (dto);
-        E savedEntity = crudService.save (presentedEntity);
-        D actualEntity = toDtoConverter.apply (savedEntity);
-        return ResponseEntity.status (OK).body (actualEntity);
+    public ResponseEntity save (@RequestBody @Valid D dto) {
+        E entity = toEntityConverter.apply (dto);
+        crudService.save (entity);
+        return ResponseEntity.status (CREATED).build ();
     }
 
     @GetMapping ("/fetchBy")
@@ -43,7 +41,8 @@ public class DefaultCrudController<E, D> {
     public ResponseEntity<List<D>> fetchAll () {
         List<E> entities = crudService.fetchAll ();
         List<D> dto = entities.stream ()
-                .map ((e) -> toDtoConverter.apply (e)).toList ();
+                .map (toDtoConverter::apply)
+                .toList ();
         return ResponseEntity.status (OK).body (dto);
     }
 
@@ -51,5 +50,9 @@ public class DefaultCrudController<E, D> {
     public ResponseEntity delete (@RequestParam Long id) {
         crudService.delete (id);
         return ResponseEntity.status (OK).build ();
+    }
+
+    public Function<E, D> getToDtoConverter () {
+        return toDtoConverter;
     }
 }

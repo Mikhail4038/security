@@ -3,7 +3,7 @@ package com.keiko.securityapp.service.common;
 import java.util.List;
 
 public interface AbstractCrudService<E> {
-    E save (E entity);
+    void save (E entity);
 
     E fetchBy (Long id);
 

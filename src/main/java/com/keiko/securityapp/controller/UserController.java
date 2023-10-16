@@ -6,10 +6,7 @@ import com.keiko.securityapp.entity.security.User;
 import com.keiko.securityapp.service.common.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping ("/user")
@@ -18,6 +15,13 @@ public class UserController
 
     @Autowired
     private UserService userService;
+
+    @GetMapping ("/byEmail")
+    public ResponseEntity<UserDto> findByEmail (@RequestParam String email) {
+        User user = userService.findUserByEmail (email);
+        UserDto dto = getToDtoConverter ().apply (user);
+        return ResponseEntity.ok ().body (dto);
+    }
 
     @PostMapping ("/addRoles")
     public ResponseEntity addRoles (@RequestBody ModifyUserRolesRequest request) {

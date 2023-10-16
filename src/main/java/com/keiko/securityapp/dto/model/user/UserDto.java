@@ -10,11 +10,10 @@ import java.util.Set;
 
 @Getter
 @Setter
+@PasswordMatches
 public class UserDto extends BaseDto {
     private String email;
     private String password;
-
-    @PasswordMatches
     private String passwordConfirm;
     private String name;
     private Set<RoleData> roles;

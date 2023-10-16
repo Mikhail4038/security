@@ -42,11 +42,11 @@ public class DefaultUserService extends DefaultCrudService<User>
     }
 
     @Override
-    public User save (User user) {
+    public void save (User user) {
         final String presentedPassword = user.getPassword ();
         final String encodePassword = passwordEncoder.encode (presentedPassword);
         user.setPassword (encodePassword);
-        return userRepository.save (user);
+        userRepository.save (user);
     }
 
     @Override
@@ -78,6 +78,11 @@ public class DefaultUserService extends DefaultCrudService<User>
             user.setRoles (actualRoles);
             userRepository.save (user);
         }
+    }
+
+    @Override
+    public void registerNewUserAccount () {
+
     }
 
     private User getUserFromRequest (ModifyUserRolesRequest request) {
