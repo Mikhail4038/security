@@ -36,6 +36,9 @@ public class User extends BaseEntity {
 
     private String name;
 
+    @Column
+    private boolean enabled;
+
     @ManyToMany (fetch = LAZY, cascade = {MERGE})
     private Set<Role> roles;
 

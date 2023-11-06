@@ -1,10 +1,11 @@
 package com.keiko.securityapp.service.jwt.impl;
 
-import com.keiko.securityapp.entity.security.Role;
 import com.keiko.securityapp.entity.jwt.JwtAuthentication;
-import com.keiko.securityapp.service.common.RoleService;
+import com.keiko.securityapp.entity.security.Role;
+import com.keiko.securityapp.service.basic.RoleService;
 import com.keiko.securityapp.service.jwt.JwtAuthenticationProvider;
 import io.jsonwebtoken.Claims;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,11 @@ import java.util.stream.Collectors;
 @Service
 public class DefaultJwtAuthenticationProvider implements JwtAuthenticationProvider {
 
-
     @Autowired
     private RoleService roleService;
 
     @Override
-    public Authentication generate (Claims claims) {
+    public Authentication generate (@NonNull Claims claims) {
         JwtAuthentication jwtAuthentication = new JwtAuthentication ();
         final String email = claims.getSubject ();
 

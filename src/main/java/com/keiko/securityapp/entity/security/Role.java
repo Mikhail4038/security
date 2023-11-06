@@ -34,6 +34,10 @@ public class Role extends BaseEntity implements GrantedAuthority {
             fetch = LAZY, cascade = {MERGE})
     private Set<User> users;
 
+    public Role (String name) {
+        this.name = name;
+    }
+
     public Role (Long id, Timestamp created, Timestamp modified, String name) {
         super (id, created, modified);
         this.name = name;

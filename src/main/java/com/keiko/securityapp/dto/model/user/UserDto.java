@@ -16,5 +16,6 @@ public class UserDto extends BaseDto {
     private String password;
     private String passwordConfirm;
     private String name;
+    private boolean enabled;
     private Set<RoleData> roles;
 }

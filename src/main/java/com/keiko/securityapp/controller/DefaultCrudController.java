@@ -1,6 +1,6 @@
 package com.keiko.securityapp.controller;
 
-import com.keiko.securityapp.service.common.AbstractCrudService;
+import com.keiko.securityapp.service.basic.AbstractCrudService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

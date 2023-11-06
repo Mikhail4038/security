@@ -2,7 +2,7 @@ package com.keiko.securityapp.controller;
 
 import com.keiko.securityapp.dto.model.role.RoleDto;
 import com.keiko.securityapp.entity.security.Role;
-import com.keiko.securityapp.service.common.RoleService;
+import com.keiko.securityapp.service.basic.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

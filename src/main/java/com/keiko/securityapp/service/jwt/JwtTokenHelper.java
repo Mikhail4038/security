@@ -1,16 +1,11 @@
 package com.keiko.securityapp.service.jwt;
 
-import com.keiko.securityapp.entity.jwt.JwtBlockUserRequest;
-import com.keiko.securityapp.entity.jwt.JwtRefreshRequest;
-import com.keiko.securityapp.entity.jwt.JwtRequest;
-import com.keiko.securityapp.entity.jwt.JwtResponse;
+import com.keiko.securityapp.entity.request.JwtRefreshRequest;
+import com.keiko.securityapp.entity.response.JwtResponse;
+import lombok.NonNull;
 
 public interface JwtTokenHelper {
-    JwtResponse login (JwtRequest jwtRequest);
+    JwtResponse getAccessToken (@NonNull JwtRefreshRequest jwtRefreshRequest);
 
-    JwtResponse getAccessToken (JwtRefreshRequest jwtRefreshRequest);
-
-    JwtResponse getRefreshToken (JwtRefreshRequest jwtRefreshRequest);
-
-    void blockUser (JwtBlockUserRequest jwtBlockUserRequest);
+    JwtResponse getRefreshToken (@NonNull JwtRefreshRequest jwtRefreshRequest);
 }
